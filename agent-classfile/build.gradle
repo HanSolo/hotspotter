@@ -1,0 +1,19 @@
+// Agent for JDK 24+ using the Classfile API (java.lang.classfile), no third-party dependencies.
+dependencies {
+    implementation project(':core')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 24
+}
+
+jar {
+    archiveBaseName    = 'hotspotter-agent-classfile'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes 'Premain-Class'          : 'eu.hansolo.hotspotter.agent.Agent',
+                   'Agent-Class'            : 'eu.hansolo.hotspotter.agent.Agent',
+                   'Can-Retransform-Classes': 'true'
+    }
+}

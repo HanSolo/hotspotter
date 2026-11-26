@@ -1,0 +1,17 @@
+// Command line front end of the analyzer
+dependencies {
+    implementation project(':analyzer-core')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+}
+
+jar {
+    archiveBaseName    = 'hotspotter-analyzer'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest {
+        attributes 'Main-Class': 'eu.hansolo.hotspotter.analyzer.Main'
+    }
+}

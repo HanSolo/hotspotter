@@ -1,0 +1,11 @@
+// CLI to load the agent into a running JVM (run with JDK 11+)
+tasks.withType(JavaCompile).configureEach {
+    options.release = 11
+}
+
+jar {
+    archiveBaseName = 'hotspotter-attach'
+    manifest {
+        attributes 'Main-Class': 'eu.hansolo.hotspotter.attach.Attach'
+    }
+}

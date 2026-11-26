@@ -1,0 +1,24 @@
+// JavaFX front end of the analyzer. Needs JDK 23+ (JavaFX 25). Run it with: ./gradlew :analyzer-fx:run --args="/absolute/path/to/hotspotter-out"
+// The OpenJFX plugin selects the JavaFX variant for your OS/CPU (mac-aarch64, win, linux, ...); a plain 'org.openjfx:javafx-controls' dependency does not.
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+dependencies {
+    implementation project(':analyzer-core')
+}
+
+javafx {
+    version = '25'
+    modules = ['javafx.controls']
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 23
+}
+
+application {
+    // Launcher does not extend Application, so the app also starts from the class path (no module-info needed)
+    mainClass = 'eu.hansolo.hotspotter.analyzer.fx.Launcher'
+}

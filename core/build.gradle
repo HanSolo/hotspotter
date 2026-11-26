@@ -1,0 +1,4 @@
+// Shared agent code: counters, filter, registry, flusher, agent entry points. Bytecode level 8 so the agent can run in old JVMs.
+tasks.withType(JavaCompile).configureEach {
+    options.release = 8
+}

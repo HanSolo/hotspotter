@@ -1,0 +1,31 @@
+// Agent for JDK 8+ using ASM. ASM is shaded (relocated) so it cannot clash with an ASM version of the monitored application.
+plugins {
+    id 'com.gradleup.shadow' version '9.2.2'
+}
+
+dependencies {
+    implementation project(':core')
+    implementation 'org.ow2.asm:asm:9.8' // use the latest ASM release, newer class file versions need newer ASM
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 8
+}
+
+jar {
+    enabled = false
+}
+
+shadowJar {
+    archiveBaseName   = 'hotspotter-agent-asm'
+    archiveClassifier = ''
+    relocate 'org.objectweb.asm', 'eu.hansolo.hotspotter.shaded.asm'
+    exclude 'module-info.class', 'META-INF/versions/**', 'META-INF/maven/**'
+    manifest {
+        attributes 'Premain-Class'          : 'eu.hansolo.hotspotter.agent.Agent',
+                   'Agent-Class'            : 'eu.hansolo.hotspotter.agent.Agent',
+                   'Can-Retransform-Classes': 'true'
+    }
+}
+
+assemble.dependsOn shadowJar

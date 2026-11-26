@@ -1,0 +1,4 @@
+// Analysis logic shared by the command line tool and the JavaFX application. No UI, no third-party dependencies.
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
+}

@@ -1,0 +1,13 @@
+rootProject.name = 'hotspotter'
+
+include 'core', 'attach', 'analyzer-core', 'analyzer', 'agent-asm'
+
+// The Classfile API variant needs a JDK 24+ to compile, so it is only part of the build when Gradle runs on one.
+if (JavaVersion.current().majorVersion.toInteger() >= 24) {
+    include 'agent-classfile'
+}
+
+// JavaFX 25 needs JDK 23+
+if (JavaVersion.current().majorVersion.toInteger() >= 23) {
+    include 'analyzer-fx'
+}
